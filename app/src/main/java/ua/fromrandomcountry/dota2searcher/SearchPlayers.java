@@ -1,6 +1,7 @@
 package ua.fromrandomcountry.dota2searcher;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -24,13 +25,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import ua.fromrandomcountry.dota2searcher.api.DotaRequestBuilder;
 import ua.fromrandomcountry.dota2searcher.api.JsonParser;
 import ua.fromrandomcountry.dota2searcher.api.SingletonRequestQueue;
+import ua.fromrandomcountry.dota2searcher.dota.Player;
 import ua.fromrandomcountry.dota2searcher.netconnection.HttpParser;
 
 public class SearchPlayers extends AppCompatActivity {
@@ -40,10 +50,11 @@ public class SearchPlayers extends AppCompatActivity {
     private final int PLAYER_LAYOUT_HEIGHT = LinearLayout.LayoutParams.MATCH_PARENT;
     private final int PLAYER_LAYOUT_ORIENTATION = LinearLayout.HORIZONTAL;
     private final String PLAYER_LAYOUT_COLOR = "#212121";
+    private final int PLAYER_LAYOUT_VERTICAL_PADDING = 20;
 
     private final int PLAYER_TEXT_WIDTH = LinearLayout.LayoutParams.WRAP_CONTENT;
     private final int PLAYER_TEXT_HEIGHT = LinearLayout.LayoutParams.MATCH_PARENT;
-    private final float PLAYER_TEXT_WEIGHT = 1.0f;
+    private final float PLAYER_TEXT_WEIGHT = 6.0f;
     private final int PLAYER_TEXT_ORIENTATION = LinearLayout.VERTICAL;
 
     private final int PLAYER_MMR_WIDTH = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -64,8 +75,8 @@ public class SearchPlayers extends AppCompatActivity {
     private final int PLAYER_GROUPMMR_ORIENTATION = LinearLayout.HORIZONTAL;
 
     // Views
-    private final int PLAYER_AVATAR_WIDTH = LinearLayout.LayoutParams.WRAP_CONTENT;
-    private final int PLAYER_AVATAR_HEIGHT = LinearLayout.LayoutParams.MATCH_PARENT;
+    private final int PLAYER_AVATAR_WIDTH = 100;
+    private final int PLAYER_AVATAR_HEIGHT = 100;
     private final float PLAYER_AVATAR_WEIGHT = 1.0f;
 
     private final int PLAYER_USERNAME_WIDTH = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -79,7 +90,7 @@ public class SearchPlayers extends AppCompatActivity {
 
     private final int PLAYER_SOLOMMR_VALUE_WIDTH = LinearLayout.LayoutParams.WRAP_CONTENT;
     private final int PLAYER_SOLOMMR_VALUE_HEIGHT = LinearLayout.LayoutParams.WRAP_CONTENT;
-    private final float PLAYER_SOLOMMR_VALUE_WEIGHT = 1.0f;
+    private final float PLAYER_SOLOMMR_VALUE_WEIGHT = 2.0f;
 
     private final int PLAYER_GROUPMMR_TITLE_WIDTH = LinearLayout.LayoutParams.WRAP_CONTENT;
     private final int PLAYER_GROUPMMR_TITLE_HEIGHT = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -87,9 +98,12 @@ public class SearchPlayers extends AppCompatActivity {
 
     private final int PLAYER_GROUPMMR_VALUE_WIDTH = LinearLayout.LayoutParams.WRAP_CONTENT;
     private final int PLAYER_GROUPMMR_VALUE_HEIGHT = LinearLayout.LayoutParams.WRAP_CONTENT;
-    private final float PLAYER_GROUPMMR_VALUE_WEIGHT = 1.0f;
+    private final float PLAYER_GROUPMMR_VALUE_WEIGHT = 2.0f;
 
-//
+// ==================================================
+
+
+    // =========================================
 
     Button btnSearch;
     private ScrollView scrollView;
@@ -97,11 +111,8 @@ public class SearchPlayers extends AppCompatActivity {
     EditText searchField;
     private SingletonRequestQueue reqQueue;
 
-    TextView tempTV;
 
-    private ArrayList<LinearLayout> playerLayouts;
-    private ArrayList<ImageView> playerAvatars;
-    private ArrayList<TextView> playerUsernames;
+    private ArrayList<Player> playersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,47 +123,28 @@ public class SearchPlayers extends AppCompatActivity {
         searchField = (EditText) findViewById(R.id.searchField);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
         scrollViewVerticalLayout = (LinearLayout) findViewById(R.id.scrollViewVerticalLayout);
-        tempTV = (TextView) findViewById(R.id.textView6);
-        //
-        tempTV.setText("-");
-        tempTV.setMovementMethod(new ScrollingMovementMethod());
+        playersList = new ArrayList<Player>();
 
         btnSearch.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tempTV.setText("0");
                 String urlToPlayers = DotaRequestBuilder.buildSearchByName(
                         searchField.getText().toString()
                 );
-                tempTV.setText("1");
-                HttpParser parser = new HttpParser();
-                String lolkek = null;
-                try {
-                    parser.execute(urlToPlayers);
-                    lolkek = parser.get();
-                    //tempTV.setText( new JSONObject(lolkek).names().toString() );
-                    // basePath, produces, swagger, paths, host, securityDefinitions, info
-                    lolkek = parser.isDone();
-                }
-                catch(Throwable e) {
-                    e.printStackTrace();
-                }
-                tempTV.setText(lolkek == null ? "isNull" : lolkek);
 
-/*
                 try {
                     JSONArray players = JsonParser.parseJSONArrayByURL(urlToPlayers);
                     drawPlayersOnScrollView(players);
                 }
-                catch (JSONException e) {
+                catch (Exception e) {
                     e.printStackTrace();
                 }
-                */
             }
         });
     }
 
-    private void initPlayerLayoutsParams(LinearLayout playerLayout,
+    private void initPlayerLayoutsParams(int number,
+                                         LinearLayout playerLayout,
                                          LinearLayout playerTextLayout,
                                          LinearLayout playerMmrLayout,
                                          LinearLayout playerSoloMmrLayout,
@@ -167,7 +159,13 @@ public class SearchPlayers extends AppCompatActivity {
         );
         playerLayout.setLayoutParams(layoutParams);
         playerLayout.setOrientation(PLAYER_LAYOUT_ORIENTATION);
-        playerLayout.setBackgroundColor(Color.parseColor(PLAYER_LAYOUT_COLOR));
+        playerLayout.setPadding(0, PLAYER_LAYOUT_VERTICAL_PADDING, 0, PLAYER_LAYOUT_VERTICAL_PADDING);
+        if (number % 2 == 0) {
+            playerLayout.setBackgroundColor(getResources().getColor(R.color.colorPlayerViewEven));
+        }
+        else {
+            playerLayout.setBackgroundColor(getResources().getColor(R.color.colorPlayerViewOdd));
+        }
 
         //playerTextLayout
         layoutParams = new LinearLayout.LayoutParams(
@@ -267,7 +265,8 @@ public class SearchPlayers extends AppCompatActivity {
 
 
     }
-    private void drawPlayersOnScrollView(JSONArray players) throws JSONException {
+
+    private void drawPlayersOnScrollView(JSONArray players) throws JSONException, InterruptedException, ExecutionException, TimeoutException {
         LinearLayout playerLayout,
                      playerTextLayout,
                      playerMmrLayout,
@@ -280,9 +279,28 @@ public class SearchPlayers extends AppCompatActivity {
                 playerSoloMmrTitle,
                 playerGroupMmrValue,
                 playerGroupMmrTitle;
-
+        System.out.println("======================");
+        System.out.println(players.length());
+        System.out.println("======================");
+        playersList.clear();
         for (int id = 0; id < players.length(); id++) {
-            JSONObject player = players.getJSONObject(id);
+            JSONObject playerJson;
+            boolean requestAgain;
+            String requestUrl = DotaRequestBuilder.buildPlayerInfoById(
+                    players.getJSONObject(id)
+                            .getLong("account_id")
+            );
+            do {
+                playerJson = JsonParser.parseJSONObjectByURL(requestUrl);
+                requestAgain = playerJson.has("error") && playerJson.getString("error").equals("rate limit exceeded");
+                if (requestAgain) {
+                    TimeUnit.MILLISECONDS.sleep(10);
+                }
+            } while (requestAgain);
+
+            playersList.add(
+                    new Player(playerJson)
+            );
 
             playerLayout = new LinearLayout(SearchPlayers.this);
             playerTextLayout = new LinearLayout(SearchPlayers.this);
@@ -290,7 +308,7 @@ public class SearchPlayers extends AppCompatActivity {
             playerSoloMmrLayout = new LinearLayout(SearchPlayers.this);
             playerGroupMmrLayout = new LinearLayout(SearchPlayers.this);
 
-            initPlayerLayoutsParams(playerLayout, playerTextLayout, playerMmrLayout, playerSoloMmrLayout, playerGroupMmrLayout);
+            initPlayerLayoutsParams(id, playerLayout, playerTextLayout, playerMmrLayout, playerSoloMmrLayout, playerGroupMmrLayout);
 
             playerAvatar = new ImageView(SearchPlayers.this);
             playerUsername = new TextView(SearchPlayers.this);
@@ -300,25 +318,31 @@ public class SearchPlayers extends AppCompatActivity {
             playerGroupMmrTitle = new TextView(SearchPlayers.this);
 
             initPlayerViewsParams(playerAvatar, playerUsername, playerSoloMmrValue, playerSoloMmrTitle, playerGroupMmrValue, playerGroupMmrTitle);
-
             // Username Block
             playerUsername.setText(
-                player.getString("person_name")
+                    playersList.get(id).getUsername()
             );
 
             // Solo MMR Block
+            playerSoloMmrTitle.setText(
+                    "Solo MMR:"
+            );
             playerSoloMmrValue.setText(
-                "2000"
+                    playersList.get(id).getSoloRank()
             );
 
             // Group MMR Block
+
+            playerGroupMmrTitle.setText(
+                    "Group MMR:"
+            );
             playerGroupMmrValue.setText(
-                "3000"
+                    playersList.get(id).getGroupRank()
             );
 
             // Avatar Block
             Picasso.get().load(
-                player.getString("avatarfull")
+                    playersList.get(id).getAvatarUrl()
             ).into(playerAvatar);
 
             playerSoloMmrLayout.addView(playerSoloMmrTitle);
@@ -336,7 +360,7 @@ public class SearchPlayers extends AppCompatActivity {
             playerLayout.addView(playerAvatar);
             playerLayout.addView(playerTextLayout);
 
-            scrollView.addView(playerLayout);
+            scrollViewVerticalLayout.addView(playerLayout);
         }
     }
 }

@@ -23,11 +23,11 @@ public class DotaRequestBuilder {
     public static String buildSearchByName(String personname) {
         StringBuilder res = new StringBuilder();
         res.append(BASE_URL);
-        res.append("?q=");
+        res.append("search?q=");
         res.append(personname);
         return res.toString();
     }
-    public static String buildPlayerInfoById(int id) {
+    public static String buildPlayerInfoById(long id) {
         StringBuilder res = new StringBuilder();
         res.append(BASE_URL);
         res.append("players/");

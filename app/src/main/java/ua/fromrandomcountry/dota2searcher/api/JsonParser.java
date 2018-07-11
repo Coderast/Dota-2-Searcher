@@ -12,11 +12,11 @@ import ua.fromrandomcountry.dota2searcher.netconnection.HttpParser;
 public class JsonParser {
 
     public static JSONArray parseJSONArrayByURL(String url) throws JSONException, InterruptedException, ExecutionException, TimeoutException {
-        return new JSONArray(new HttpParser().getPageSource(url));
+        return new JSONArray(new HttpParser().execute(url).get());
     }
 
     public static JSONObject parseJSONObjectByURL(String url) throws JSONException, InterruptedException, ExecutionException, TimeoutException {
-        return new JSONObject(new HttpParser().getPageSource(url));
+        return new JSONObject(new HttpParser().execute(url).get());
     }
 
 }
