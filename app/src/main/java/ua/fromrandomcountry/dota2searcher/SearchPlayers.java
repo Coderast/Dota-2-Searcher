@@ -1,5 +1,6 @@
 package ua.fromrandomcountry.dota2searcher;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -302,10 +303,8 @@ public class SearchPlayers extends AppCompatActivity {
                     TimeUnit.MILLISECONDS.sleep(10);
                 }
             } while (requestAgain);
-
-            playersList.add(
-                    new Player(playerJson)
-            );
+            final Player player = new Player(playerJson);
+            playersList.add(player);
 
             playerLayout = new LinearLayout(SearchPlayers.this);
             playerTextLayout = new LinearLayout(SearchPlayers.this);
@@ -364,7 +363,14 @@ public class SearchPlayers extends AppCompatActivity {
 
             playerLayout.addView(playerAvatar);
             playerLayout.addView(playerTextLayout);
-
+            playerLayout.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SearchPlayers.this, PlayerInfoActivity.class);
+                    intent.putExtra("account_id", player.getAccountId());
+                    startActivity(intent);
+                }
+            });
             scrollViewVerticalLayout.addView(playerLayout);
         }
     }
