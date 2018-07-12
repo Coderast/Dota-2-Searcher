@@ -48,7 +48,7 @@ public class Player {
             winCount = winsAndLoses.getString("win");
             loseCount = winsAndLoses.getString("lose");
 
-            lastMatch.setLastMatch(accountId);
+            lastMatch = new Match(accountId);
         }
         catch (Exception e) {
             e.printStackTrace();

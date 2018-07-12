@@ -27,6 +27,9 @@ public class Match {
     public void setLastMatch(long accountId) {
         try {
             String url = DotaRequestBuilder.buildPlayerRecentMatches(accountId);
+            System.out.println("!!!??!!!!!!!!!!!!!!!");
+            System.out.println(url);
+            System.out.println("!!!!!!!!!!!!!!!??!!!");
             JSONObject lastMatch = JsonParser.parseJSONArrayByURL(url).getJSONObject(0);
 
             matchId = lastMatch.getLong("match_id");
