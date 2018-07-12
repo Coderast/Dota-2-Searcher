@@ -263,19 +263,22 @@ public class SearchPlayers extends AppCompatActivity {
         }
 
         for (int id = 0; id < players.length(); id++) {
-            JSONObject playerJson;
-            boolean requestAgain;
+            JSONObject playerJson = null;
+            boolean requestAgain = true;
             String requestUrl = DotaRequestBuilder.buildPlayerInfoById(
                     players.getJSONObject(id)
                             .getLong("account_id")
             );
-            do {
+            for (int i = 1; requestAgain; i++) {
                 playerJson = JsonParser.parseJSONObjectByURL(requestUrl);
                 requestAgain = playerJson.has("error") && playerJson.getString("error").equals("rate limit exceeded");
                 if (requestAgain) {
-                    TimeUnit.MILLISECONDS.sleep(10);
+                    if (i > 20) {
+                        throw new RuntimeException("Hasn't answer from API");
+                    }
+                    TimeUnit.MILLISECONDS.sleep(20*i);
                 }
-            } while (requestAgain);
+            }
             final Player player = new Player(playerJson);
 
             playerLayout = new LinearLayout(SearchPlayers.this);
