@@ -2,6 +2,9 @@ package ua.fromrandomcountry.dota2searcher.dota;
 
 import org.json.JSONObject;
 
+import ua.fromrandomcountry.dota2searcher.api.DotaRequestBuilder;
+import ua.fromrandomcountry.dota2searcher.api.JsonParser;
+
 public class Player {
     private long accountId;
     private String soloRank;
@@ -10,6 +13,10 @@ public class Player {
     private String username;
     private String localCountryCode;
     private String avatarUrl;
+    private String cheeseCount;
+    private String winCount;
+    private String loseCount;
+    private Match lastMatch;
 
     public Player(JSONObject player) {
         this.set(player);
@@ -32,6 +39,16 @@ public class Player {
             profileUrl = profile.getString("profileurl");
             localCountryCode = profile.getString("loccountrycode");
             avatarUrl = profile.getString("avatarmedium");
+            cheeseCount = profile.getString("cheese");
+
+            JSONObject winsAndLoses = JsonParser.parseJSONObjectByURL(
+                    DotaRequestBuilder.buildWinLosesById(accountId)
+            );
+
+            winCount = winsAndLoses.getString("win");
+            loseCount = winsAndLoses.getString("lose");
+
+            lastMatch.setLastMatch(accountId);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -85,5 +102,37 @@ public class Player {
     }
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public String getCheeseCount() {
+        return cheeseCount;
+    }
+
+    public void setCheeseCount(String cheeseCount) {
+        this.cheeseCount = cheeseCount;
+    }
+
+    public String getWinCount() {
+        return winCount;
+    }
+
+    public void setWinCount(String winCount) {
+        this.winCount = winCount;
+    }
+
+    public String getLoseCount() {
+        return loseCount;
+    }
+
+    public void setLoseCount(String loseCount) {
+        this.loseCount = loseCount;
+    }
+
+    public Match getLastMatch() {
+        return lastMatch;
+    }
+
+    public void setLastMatch(Match lastMatch) {
+        this.lastMatch = lastMatch;
     }
 }

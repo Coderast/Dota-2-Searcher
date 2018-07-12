@@ -36,5 +36,24 @@ public class DotaRequestBuilder {
         res.append(id);
         return res.toString();
     }
+    public static String buildPlayerRecentMatches(long id) {
+        StringBuilder res = new StringBuilder();
+        res.append(BASE_URL);
+        res.append("players/");
+        res.append(id);
+        res.append("/recentMatches");
+        return res.toString();
+    }
+    public static String getHeroesList() {
+        return "https://api.opendota.com/api/heroes";
+    }
+    public static String buildWinLosesById(long id) {
+        StringBuilder res = new StringBuilder();
+        res.append(BASE_URL);
+        res.append("players/");
+        res.append(id);
+        res.append("/wl/");
+        return res.toString();
+    }
 
 }

@@ -1,48 +1,30 @@
 package ua.fromrandomcountry.dota2searcher;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 import android.view.View;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import ua.fromrandomcountry.dota2searcher.api.DotaRequestBuilder;
 import ua.fromrandomcountry.dota2searcher.api.JsonParser;
-import ua.fromrandomcountry.dota2searcher.api.SingletonRequestQueue;
 import ua.fromrandomcountry.dota2searcher.dota.Player;
-import ua.fromrandomcountry.dota2searcher.netconnection.HttpParser;
 
 public class SearchPlayers extends AppCompatActivity {
 
@@ -107,13 +89,8 @@ public class SearchPlayers extends AppCompatActivity {
     // =========================================
 
     Button btnSearch;
-    private ScrollView scrollView;
     LinearLayout scrollViewVerticalLayout;
     EditText searchField;
-    private SingletonRequestQueue reqQueue;
-
-
-    private ArrayList<Player> playersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,9 +99,7 @@ public class SearchPlayers extends AppCompatActivity {
         //
         btnSearch = (Button) findViewById(R.id.btnSearch);
         searchField = (EditText) findViewById(R.id.searchField);
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
         scrollViewVerticalLayout = (LinearLayout) findViewById(R.id.scrollViewVerticalLayout);
-        playersList = new ArrayList<Player>();
 
         btnSearch.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -283,7 +258,6 @@ public class SearchPlayers extends AppCompatActivity {
         System.out.println("======================");
         System.out.println(players.length());
         System.out.println("======================");
-        playersList.clear();
 
         if(scrollViewVerticalLayout.getChildCount() > 0) {
             scrollViewVerticalLayout.removeAllViews();
@@ -304,7 +278,6 @@ public class SearchPlayers extends AppCompatActivity {
                 }
             } while (requestAgain);
             final Player player = new Player(playerJson);
-            playersList.add(player);
 
             playerLayout = new LinearLayout(SearchPlayers.this);
             playerTextLayout = new LinearLayout(SearchPlayers.this);
@@ -324,7 +297,7 @@ public class SearchPlayers extends AppCompatActivity {
             initPlayerViewsParams(playerAvatar, playerUsername, playerSoloMmrValue, playerSoloMmrTitle, playerGroupMmrValue, playerGroupMmrTitle);
             // Username Block
             playerUsername.setText(
-                    playersList.get(id).getUsername()
+                    player.getUsername()
             );
 
             // Solo MMR Block
@@ -332,7 +305,7 @@ public class SearchPlayers extends AppCompatActivity {
                     "Solo MMR:"
             );
             playerSoloMmrValue.setText(
-                    playersList.get(id).getSoloRank()
+                    player.getSoloRank()
             );
 
             // Group MMR Block
@@ -341,12 +314,12 @@ public class SearchPlayers extends AppCompatActivity {
                     "Group MMR:"
             );
             playerGroupMmrValue.setText(
-                    playersList.get(id).getGroupRank()
+                    player.getGroupRank()
             );
 
             // Avatar Block
             Picasso.get().load(
-                    playersList.get(id).getAvatarUrl()
+                    player.getAvatarUrl()
             ).into(playerAvatar);
 
             playerSoloMmrLayout.addView(playerSoloMmrTitle);
