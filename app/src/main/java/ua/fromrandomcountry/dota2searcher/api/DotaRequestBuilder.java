@@ -25,7 +25,9 @@ public class DotaRequestBuilder {
         res.append(BASE_URL);
         res.append("search?q=");
         res.append(personname);
-        return res.toString();
+        String resString = res.toString();
+        resString = resString.replaceAll(" " ,"%20");
+        return resString;
     }
     public static String buildPlayerInfoById(long id) {
         StringBuilder res = new StringBuilder();

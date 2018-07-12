@@ -283,6 +283,11 @@ public class SearchPlayers extends AppCompatActivity {
         System.out.println(players.length());
         System.out.println("======================");
         playersList.clear();
+
+        if(scrollViewVerticalLayout.getChildCount() > 0) {
+            scrollViewVerticalLayout.removeAllViews();
+        }
+
         for (int id = 0; id < players.length(); id++) {
             JSONObject playerJson;
             boolean requestAgain;
