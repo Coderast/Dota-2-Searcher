@@ -1,3 +1,22 @@
 <resources>
-    <string name="app_name">Dota2 Searcher</string>
+    <string name="app_name">Dota 2 Searcher</string>
+    <string name="search_btn">Search</string>
+    <string name="solo_mmr_title">Solo MMR:</string>
+    <string name="group_mmr_title">Group MMR:</string>
+    <string name="link_to_profile_btn">Go to Profile</string>
+    <string name="cheese_title">Cheese: </string>
+    <string name="wins_percent_title">Wins %: </string>
+    <string name="wins_title">Wins: </string>
+    <string name="loses_title">Loses: </string>
+    <string name="last_match_title">Last match</string>
+    <string name="match_id_title">Match ID: </string>
+    <string name="team_winner_title">Team winner: </string>
+    <string name="hero_title">Hero: </string>
+    <string name="kda_title">Kills / Deaths / Assists: </string>
+    <string name="xp_per_m_title">XP per min: </string>
+    <string name="gold_per_m_title">Gold per min: </string>
+    <string name="hero_damage_title">Hero Damage: </string>
+    <string name="tower_damage_title">Tower Damage: </string>
+    <string name="hero_heal_title">Hero Healing: </string>
+    <string name="last_hits_title">Last hits count: </string>
 </resources>

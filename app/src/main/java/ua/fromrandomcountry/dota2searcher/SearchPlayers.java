@@ -32,7 +32,6 @@ public class SearchPlayers extends AppCompatActivity {
     private final int PLAYER_LAYOUT_WIDTH = LinearLayout.LayoutParams.MATCH_PARENT;
     private final int PLAYER_LAYOUT_HEIGHT = LinearLayout.LayoutParams.MATCH_PARENT;
     private final int PLAYER_LAYOUT_ORIENTATION = LinearLayout.HORIZONTAL;
-    private final String PLAYER_LAYOUT_COLOR = "#212121";
     private final int PLAYER_LAYOUT_VERTICAL_PADDING = 20;
 
     private final int PLAYER_TEXT_WIDTH = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -302,7 +301,7 @@ public class SearchPlayers extends AppCompatActivity {
 
             // Solo MMR Block
             playerSoloMmrTitle.setText(
-                    "Solo MMR:"
+                    R.string.solo_mmr_title
             );
             playerSoloMmrValue.setText(
                     player.getSoloRank()
@@ -311,7 +310,7 @@ public class SearchPlayers extends AppCompatActivity {
             // Group MMR Block
 
             playerGroupMmrTitle.setText(
-                    "Group MMR:"
+                    R.string.group_mmr_title
             );
             playerGroupMmrValue.setText(
                     player.getGroupRank()

@@ -35,7 +35,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:paddingTop="15dp"
-                android:text="Username" />
+                android:text="" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -54,14 +54,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Solo MMR:" />
+                        android:text="@string/solo_mmr_title" />
 
                     <TextView
                         android:id="@+id/infoSoloRankValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="2000" />
+                        android:text="" />
 
                 </LinearLayout>
 
@@ -76,14 +76,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Group MMR:" />
+                        android:text="@string/group_mmr_title" />
 
                     <TextView
                         android:id="@+id/infoGroupRankValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="3000" />
+                        android:text="" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -94,7 +94,7 @@
             android:id="@+id/infoProfileLink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Go to Profile" />
+            android:text="@string/link_to_profile_btn" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -122,14 +122,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="Cheese: " />
+                        android:paddingRight="5dp"
+                        android:text="@string/cheese_title" />
 
                     <TextView
                         android:id="@+id/infoCheeseCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="0" />
+                        android:text="" />
 
                 </LinearLayout>
 
@@ -146,14 +147,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="Wins %: " />
+                        android:paddingRight="5dp"
+                        android:text="@string/wins_percent_title" />
 
                     <TextView
                         android:id="@+id/infoWinRateCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="0" />
+                        android:text="" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -178,14 +180,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="Wins: " />
+                        android:paddingRight="5dp"
+                        android:text="@string/wins_title" />
 
                     <TextView
                         android:id="@+id/infoWinsCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="0" />
+                        android:text="" />
 
                 </LinearLayout>
 
@@ -202,14 +205,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="Loses: " />
+                        android:paddingRight="5dp"
+                        android:text="@string/loses_title" />
 
                     <TextView
                         android:id="@+id/infoLosesCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="0" />
+                        android:text="" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -222,7 +226,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="Last match"
+            android:text="@string/last_match_title"
             android:textSize="20sp" />
 
         <LinearLayout
@@ -243,14 +247,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="Match ID: " />
+                    android:paddingRight="5dp"
+                    android:text="@string/match_id_title" />
 
                 <TextView
                     android:id="@+id/infoMatchIdValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="0" />
+                    android:text="" />
             </LinearLayout>
 
             <LinearLayout
@@ -264,14 +269,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="Team winner: " />
+                    android:paddingRight="5dp"
+                    android:text="@string/team_winner_title" />
 
                 <TextView
                     android:id="@+id/infoTeamWinnerValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="Radiant" />
+                    android:text="" />
             </LinearLayout>
 
             <LinearLayout
@@ -285,14 +291,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="Hero: " />
+                    android:paddingRight="5dp"
+                    android:text="@string/hero_title" />
 
                 <TextView
                     android:id="@+id/infoHeroValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="Unknown" />
+                    android:text="" />
             </LinearLayout>
 
             <LinearLayout
@@ -306,14 +313,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="Kills / Deaths / Assists: " />
+                    android:paddingRight="5dp"
+                    android:text="@string/kda_title" />
 
                 <TextView
                     android:id="@+id/infoKDAValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="0 / 0 / 0" />
+                    android:text="" />
             </LinearLayout>
 
             <LinearLayout
@@ -325,16 +333,17 @@
                 <TextView
                     android:id="@+id/infoXpPerMinTitle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0"
-                    android:text="XP per min: " />
+                    android:paddingRight="5dp"
+                    android:text="@string/xp_per_m_title" />
 
                 <TextView
                     android:id="@+id/infoXpPerMinValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="0" />
+                    android:text="" />
             </LinearLayout>
 
             <LinearLayout
@@ -348,14 +357,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="Gold per min: " />
+                    android:paddingRight="5dp"
+                    android:text="@string/gold_per_m_title" />
 
                 <TextView
                     android:id="@+id/infoGoldPerMinValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="0" />
+                    android:text="" />
             </LinearLayout>
 
             <LinearLayout
@@ -369,14 +379,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="Hero Damage: " />
+                    android:paddingRight="5dp"
+                    android:text="@string/hero_damage_title" />
 
                 <TextView
                     android:id="@+id/infoHeroDamageValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="0" />
+                    android:text="" />
             </LinearLayout>
 
             <LinearLayout
@@ -390,14 +401,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="Tower Damage: " />
+                    android:paddingRight="5dp"
+                    android:text="@string/tower_damage_title" />
 
                 <TextView
                     android:id="@+id/infoTowerDamageValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="0" />
+                    android:text="" />
             </LinearLayout>
 
             <LinearLayout
@@ -411,14 +423,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="Hero Heal: " />
+                    android:paddingRight="5dp"
+                    android:text="@string/hero_heal_title" />
 
                 <TextView
                     android:id="@+id/infoHeroHealValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="0" />
+                    android:text="" />
             </LinearLayout>
 
             <LinearLayout
@@ -432,14 +445,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="Last hits count: " />
+                    android:paddingRight="5dp"
+                    android:text="@string/last_hits_title" />
 
                 <TextView
                     android:id="@+id/infoLastHitsValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="0" />
+                    android:text="" />
             </LinearLayout>
         </LinearLayout>
 
