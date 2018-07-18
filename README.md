@@ -8,7 +8,7 @@ Acquired the basic skill of Android developing. <br>
 
 You can find(very slow) list of players **Dota 2** by nickname and see themselves statistic, profiles links and info about last match.
 
-## About design
+## About UI
 
 Application has two activities: SearchPlayer and PlayerInfo
 
